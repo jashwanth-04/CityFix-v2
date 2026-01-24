@@ -31,6 +31,17 @@ This "Major Project" demonstrates a full-stack implementation of a real-world pr
 - **Image Processing**: Efficient handling of photo uploads using Multer.
 - **Responsive Design**: Built with React and Vite for a seamless experience on modern devices.
 
+### 🛡️ Security Features
+- **Rate Limiting**: Protects against brute force attacks and API abuse
+  - Auth endpoints: 5 requests per 15 minutes (prevents credential stuffing)
+  - API endpoints: 100 requests per 15 minutes
+  - Complaint creation: 10 per hour (prevents spam)
+- **Input Validation**: Schema-based validation using Joi with XSS sanitization
+- **Security Headers**: Helmet middleware for XSS, clickjacking, and MIME sniffing protection
+- **NoSQL Injection Prevention**: MongoDB query sanitization using express-mongo-sanitize
+- **Secure Error Handling**: Generic error messages in production (no stack traces leaked)
+- **Environment Validation**: Startup checks for required security configuration
+
 ---
 
 ## 🛠️ Tech Stack
@@ -67,12 +78,19 @@ Follow these steps to set up the project locally on your machine.
     cd server
     npm install
     ```
-    *Create a `.env` file in the `server` directory:*
+    *Create a `.env` file in the `server` directory (see `.env.example` for template):*
     ```env
     MONGO_URI=your_mongodb_connection_string
-    JWT_SECRET=your_jwt_secret_key
+    JWT_SECRET=your_secure_random_secret_at_least_32_chars
     PORT=5000
+    NODE_ENV=development
     ```
+    
+    > ⚠️ **Security Note**: Generate a strong JWT_SECRET using:
+    > ```bash
+    > node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+    > ```
+    
     *(Optional) Run the seed script to create test users:*
     ```bash
     node seed.js
@@ -105,8 +123,8 @@ npm run dev
 ## 📸 Usage
 
 1.  **Login**: Use the toggle to switch between **Citizen** and **Admin** login.
-    *   *Demo Citizen credentials*: `citizen@test.com` / `password123`
-    *   *Demo Admin credentials*: `admin@test.com` / `password123`
+    *   *Demo Citizen credentials*: `citizen@test.com` / `Password123!`
+    *   *Demo Admin credentials*: `admin@test.com` / `Password123!`
 2.  **Report**: As a citizen, click "New Complaint", fill details, and upload a photo.
 3.  **Manage**: Log out and log in as Admin to see the new complaint and change its status.
 
@@ -121,12 +139,6 @@ Contributions are what make the open-source community such an amazing place to l
 3.  Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
 4.  Push to the Branch (`git push origin feature/AmazingFeature`)
 5.  Open a Pull Request
-
----
-
-## 📝 License
-
-Distributed under the ISC License.
 
 ---
 

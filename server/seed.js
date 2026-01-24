@@ -11,12 +11,12 @@ const seedUsers = async () => {
         await mongoose.connect(process.env.MONGO_URI);
         console.log('MongoDB Connected');
 
-        // Clear existing users (optional - comment out if you want to keep existing users)
-        // await User.deleteMany({});
+        // Clear existing users to ensure they have compliant passwords
+        await User.deleteMany({});
 
-        // Hash password
+        // Hash password (meets validation: 8+ chars, uppercase, lowercase, number)
         const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash('password123', salt);
+        const hashedPassword = await bcrypt.hash('Password123!', salt);
 
         // Create dummy users
         const users = [
@@ -46,13 +46,13 @@ const seedUsers = async () => {
         console.log('\n📋 Login Credentials:');
         console.log('\n👤 CITIZEN ACCOUNT:');
         console.log('   Email: citizen@test.com');
-        console.log('   Password: password123');
+        console.log('   Password: Password123!');
         console.log('\n👤 ADMIN ACCOUNT:');
         console.log('   Email: admin@test.com');
-        console.log('   Password: password123');
+        console.log('   Password: Password123!');
         console.log('\n👤 ADDITIONAL CITIZEN:');
         console.log('   Email: jane@test.com');
-        console.log('   Password: password123');
+        console.log('   Password: Password123!');
 
         process.exit(0);
     } catch (err) {
