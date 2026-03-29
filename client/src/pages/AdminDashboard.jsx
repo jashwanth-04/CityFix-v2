@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 
+const BASE_URL = import.meta.env.VITE_API_URL;
+
 function AdminDashboard() {
     const [user, setUser] = useState(null);
     const [complaints, setComplaints] = useState([]);
@@ -34,7 +36,7 @@ function AdminDashboard() {
 
     const fetchComplaints = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/api/complaints');
+            const response = await axios.get(`${BASE_URL}/api/complaints`);
             setComplaints(response.data);
             setFilteredComplaints(response.data);
             setLoading(false);
@@ -67,7 +69,7 @@ function AdminDashboard() {
 
     const updateComplaintStatus = async (id, newStatus) => {
         try {
-            await axios.put(`http://localhost:5000/api/complaints/${id}`, {
+            await axios.put(`${BASE_URL}/api/complaints/${id}`, {
                 status: newStatus
             });
             fetchComplaints();
@@ -210,7 +212,7 @@ function AdminDashboard() {
 
                                 {complaint.photo && (
                                     <img
-                                        src={`http://localhost:5000/${complaint.photo}`}
+                                        src={`${BASE_URL}/${complaint.photo}`}
                                         alt="Issue"
                                         style={{
                                             width: '100%',

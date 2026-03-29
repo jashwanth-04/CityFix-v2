@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 
+const BASE_URL = import.meta.env.VITE_API_URL;
+
 function MyComplaints() {
     const [user, setUser] = useState(null);
     const [complaints, setComplaints] = useState([]);
@@ -20,7 +22,7 @@ function MyComplaints() {
 
     const fetchComplaints = async (userId) => {
         try {
-            const response = await axios.get(`http://localhost:5000/api/complaints?userId=${userId}`);
+            const response = await axios.get(`${BASE_URL}/api/complaints?userId=${userId}`);
             setComplaints(response.data);
             setLoading(false);
         } catch (err) {
@@ -89,7 +91,7 @@ function MyComplaints() {
 
                                 {complaint.photo && (
                                     <img
-                                        src={`http://localhost:5000/${complaint.photo}`}
+                                        src={`${BASE_URL}/${complaint.photo}`}
                                         alt="Issue"
                                         style={{
                                             width: '100%',

@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 
+const BASE_URL = import.meta.env.VITE_API_URL;
+
 function Register() {
     const [formData, setFormData] = useState({
         username: '',
@@ -30,7 +32,7 @@ function Register() {
         }
 
         try {
-            await axios.post('http://localhost:5000/api/auth/register', {
+            await axios.post(`${BASE_URL}/api/auth/register`, {
                 username: formData.username,
                 email: formData.email,
                 password: formData.password,
